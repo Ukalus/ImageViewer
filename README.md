@@ -18,6 +18,8 @@ To build this project you need the following libraries:
 - GLFW
 - ImGui
 
+#### Installing on Linux (Manjaro)
+
 if your new compiling first read this: https://learnopengl.com/Getting-started/Creating-a-window
 
 
@@ -28,14 +30,18 @@ As mention in the Tutorial Glad can be configured and downloaded on https://glad
 
 GLFW 
 
-I decided to use GLFW as a Dynamic Library so i dont have to deal with linking system specific files to the linker
-EDIT: in the future i may also use GLFW as a static libary if im developing, to decrease compile time 
+either get the glfw libary from your favorite package manager or compile it yourself
 
 i used the following commands inside my project folder to get GLFW included into the project
 
-git clone https://github.com/glfw/glfw.git
-cd glfw
-cmake -D BUILD_SHARED_LIBS=ON ../glfw 
-cmake --build .
-make 
-make DESTDIR=.. install ../   
+    git clone https://github.com/glfw/glfw.git
+    cd glfw
+    cmake ../glfw 
+    cmake --build .
+    make 
+    sudo make install  
+
+after that put the header and lib file into you standard search path something like **/usr/lib/** 
+
+
+

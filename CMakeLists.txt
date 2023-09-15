@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 project(ImageViewer)
-add_executable(ImageViewer main.cpp)
-# link_directories(./)
-# TARGET_LINK_LIBRARIES(ImageViewer ./glfw.so)
+include_directories(${PROJECT_SOURCE_DIR})
+add_executable(ImageViewer main.cpp glad.c)
+TARGET_LINK_LIBRARIES(ImageViewer glfw3)
