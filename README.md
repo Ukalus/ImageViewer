@@ -45,3 +45,26 @@ after that put the header and lib file into you standard search path something l
 
 
 
+## Classes 
+
+![Docs/Classes.drawio.svg](Docs/Classes.drawio.svg)
+
+
+## Flowchart
+
+
+## UkalusEngine::Init()
+
+Initiates a window context und makes OpenGl ready to use 
+
+## UkalusEngine::Update()
+
+Handles changes and updates before the rendering step 
+
+## UkalusEngine::Render()
+
+The Rendering loop where buffers are being swapped out 
+
+
+
+

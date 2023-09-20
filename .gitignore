@@ -1,6 +1,6 @@
 CMakeFiles
 glfw/*
-ImGui/*
+imgui
 OpenGl/*
 usr
 ImageViewer
