@@ -1,8 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include "src/renderObject.h"
-#include "imgui/imgui.h"
+#include <renderObject.h>
+
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
 
 
 
@@ -11,6 +14,7 @@ class UkalusEngine {
         const unsigned int screenWidth = 800;
         const unsigned int screenHeigth = 600;
         GLFWwindow* window;
+        GLFWwindow* gui_window;
         
         bool shouldClose = false;
         
@@ -49,26 +53,48 @@ class UkalusEngine {
                     std::cout << "Failed to initialize GLAD" << std::endl;
                     shouldClose = true;
                 }
-           
+            IMGUI_CHECKVERSION();
+            ImGui::CreateContext();
+            ImGuiIO& io = ImGui::GetIO();
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+            io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
+
+            gui_window = glfwCreateWindow(screenWidth, screenHeigth, "ImGui Example", NULL, NULL);
+            glfwMakeContextCurrent(gui_window);
+            // Setup Platform/Renderer backends
+            ImGui_ImplGlfw_InitForOpenGL(gui_window, false);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+            ImGui_ImplOpenGL3_Init();
             
         };
         void update(){
             processInput(window);
+            glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+            glClear(GL_COLOR_BUFFER_BIT);
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+            ImGui::ShowDemoWindow(); // Show demo window! :)
         };
         void render(){
-
+            
             glfwSwapBuffers(window);
-            glfwPollEvents();  
+            glfwPollEvents(); 
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
             
         };    
         void shutdown(){
+            ImGui_ImplOpenGL3_Shutdown();
+            ImGui_ImplGlfw_Shutdown();
+            ImGui::DestroyContext();
             glfwTerminate();
             system("clear");
         };
 
        
 };
-
 
 
 int main(){
@@ -78,6 +104,8 @@ int main(){
     while(!glfwWindowShouldClose(renderer.window)){
         renderer.update();
         renderer.render();
+       
+      
     }
     renderer.shutdown();
 

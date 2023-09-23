@@ -1,5 +1,54 @@
 cmake_minimum_required(VERSION 3.10)
 project(ImageViewer)
-include_directories(${PROJECT_SOURCE_DIR})
-add_executable(ImageViewer main.cpp glad.c)
-TARGET_LINK_LIBRARIES(ImageViewer glfw3)
+
+
+# This adds the paths inside the program
+set(SRC_DIR ./src)
+set(INCLUDE_DIR ./include)
+set(THIRD_PARTY ./third_party)
+
+
+# All source code files i have written
+set(SOURCES
+    ${SRC_DIR}/main.cpp 
+    ${SRC_DIR}/renderObject.cpp
+    ${THIRD_PARTY}/imgui/imgui.cpp
+    ${THIRD_PARTY}/imgui/imgui_demo.cpp 
+    ${THIRD_PARTY}/imgui/imgui_draw.cpp 
+    ${THIRD_PARTY}/imgui/imgui_tables.cpp 
+    ${THIRD_PARTY}/imgui/imgui_widgets.cpp   
+    ${THIRD_PARTY}/imgui/backends/imgui_impl_glfw.cpp
+    ${THIRD_PARTY}/imgui/backends/imgui_impl_opengl3.cpp
+
+
+)
+
+
+
+
+
+set(GLFW_LIB_PATH ${THIRD_PARTY}/)
+
+add_executable(ImageViewer
+    ${SOURCES}
+)
+
+# All include directories in which the header files are for the project
+target_include_directories(ImageViewer PUBLIC
+    ${INCLUDE_DIR}
+    ${THIRD_PARTY}
+    ${THIRD_PARTY}/imgui
+    ${THIRD_PARTY}/imgui/backends
+    
+) 
+
+add_subdirectory(${THIRD_PARTY}/glad)
+
+# All library file include paths  
+target_link_directories(ImageViewer PUBLIC 
+    ./third_party/lib/
+    
+)
+
+# Linking the librarys to target
+target_link_libraries(ImageViewer glfw3 glad)
