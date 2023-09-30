@@ -92,6 +92,9 @@ class UkalusEngine {
             // Setup Platform/Renderer backends
             ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
             ImGui_ImplOpenGL3_Init();
+
+            canvas.loadShader("./shader/canvas.vert", canvas.ShaderType::vertex);
+            canvas.loadShader("./shader/canvas.frag", canvas.ShaderType::fragment);
             
         }
         void update(){
@@ -134,6 +137,7 @@ class UkalusEngine {
                 }
                 ImGui::EndMainMenuBar();
                 ImGui::ShowDemoWindow();
+                
                 canvas.drawImage(window,800,800);
             }
         }
