@@ -62,7 +62,7 @@ class Canvas{
         
         
     }
-    void drawImage(GLFWwindow* window,float width,float height){
+    void draw(GLFWwindow* window,float width,float height){
         float vertices[] = {
             0.0f,  -1.0f, 0.0f,
             0.0f,   1.0f, 0.0f,

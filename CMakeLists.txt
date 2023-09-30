@@ -12,6 +12,8 @@ set(THIRD_PARTY ./third_party)
 set(SOURCES
     ${SRC_DIR}/main.cpp 
     ${SRC_DIR}/canvas.cpp
+    ${SRC_DIR}/mainMenu.cpp
+    ${SRC_DIR}/debug.cpp
     ${THIRD_PARTY}/imgui/imgui.cpp
     ${THIRD_PARTY}/imgui/imgui_demo.cpp 
     ${THIRD_PARTY}/imgui/imgui_draw.cpp 
