@@ -11,7 +11,7 @@ set(THIRD_PARTY ./third_party)
 # All source code files i have written
 set(SOURCES
     ${SRC_DIR}/main.cpp 
-    ${SRC_DIR}/renderObject.cpp
+    ${SRC_DIR}/canvas.cpp
     ${THIRD_PARTY}/imgui/imgui.cpp
     ${THIRD_PARTY}/imgui/imgui_demo.cpp 
     ${THIRD_PARTY}/imgui/imgui_draw.cpp 
@@ -19,8 +19,7 @@ set(SOURCES
     ${THIRD_PARTY}/imgui/imgui_widgets.cpp   
     ${THIRD_PARTY}/imgui/backends/imgui_impl_glfw.cpp
     ${THIRD_PARTY}/imgui/backends/imgui_impl_opengl3.cpp
-
-
+    ${THIRD_PARTY}/imgui/misc/cpp/imgui_stdlib.cpp
 )
 
 
@@ -39,6 +38,7 @@ target_include_directories(ImageViewer PUBLIC
     ${THIRD_PARTY}
     ${THIRD_PARTY}/imgui
     ${THIRD_PARTY}/imgui/backends
+    ${THIRD_PATTY}/stb
     
 ) 
 

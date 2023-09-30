@@ -1,50 +1,40 @@
-Goal of this project:
+# ImageViewer
 
-Use ImGui and OpenGl to view an image (maybe even edit it)
+Imageviewer allows you to open and view PNG files and 3D files (crazy i know).
 
 definition of done:
 
-- [ ] ImGui window with open and safe functionality 
-- [ ] OpenGl context inside of application 
+- [ ]  Select a PNG image file and render it in the Viewport
+- [ ]  Select a 3Dfile and render it in the Viewport
 
+Additional Goals:
 
-Building the Project:
+- [ ] Be able to draw on the loaded image and save it afterwards
+- [ ] Create an image from scratch
+- [ ] Add support for other file formats
 
-Is done by using CMake as a build-system.
+special thanks to the horrid cmake documentation
+#### Dependecies 
 
-To build this project you need the following libraries:
-
-- GLAD
-- GLFW
-- ImGui
+- GLAD (Retrieve function pointers from GPU)
+- GLFW (Window context & Controls)
+- ImGui (Gui elements)
+- stb_image (Image loading)
+- Assimp (3D model / scene loading)
 
 #### Installing on Linux (Manjaro)
 
-if your new compiling first read this: https://learnopengl.com/Getting-started/Creating-a-window
+just look at the includes of main.cpp (I believe in you!) -> should add instructions later 
 
 
-GLAD
+#### Installing on Windows 
 
-As mention in the Tutorial Glad can be configured and downloaded on https://glad.dav1d.de/
-
-
-GLFW 
-
-either get the glfw libary from your favorite package manager or compile it yourself
-
-i used the following commands inside my project folder to get GLFW included into the project
-
-    git clone https://github.com/glfw/glfw.git
-    cd glfw
-    cmake ../glfw 
-    cmake --build .
-    make 
-    sudo make install  
-
-after that put the header and lib file into you standard search path something like **/usr/lib/** 
+ewww 
 
 
+#### Installing on Mac 
 
+no 
 ## Classes 
 
 ![Docs/Classes.drawio.svg](Docs/Classes.drawio.svg)

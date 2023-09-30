@@ -7,3 +7,5 @@ ImageViewer
 cmake_install.cmake
 CMakeCache
 Makefile
+third_party/*
+

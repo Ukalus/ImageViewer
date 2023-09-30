@@ -1,20 +1,41 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
-#include <renderObject.h>
+#include <fstream>
+#include <string>
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <misc/cpp/imgui_stdlib.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
 
 
+#include <canvas.h>
 
+
+double mouse_x = 0;
+double mouse_y = 0;
+
+static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    mouse_x = xpos;
+    mouse_y = ypos;
+    
+}
 class UkalusEngine {
     public:
-        const unsigned int screenWidth = 800;
-        const unsigned int screenHeigth = 600;
+        unsigned int screenWidth = 800;
+        unsigned int screenHeigth = 600;
         GLFWwindow* window;
         GLFWwindow* gui_window;
+        std::string filePath = "./static/example.txt";
+        std::fstream activeFile;
+        std::string text;
+        Canvas canvas;
+         
         
         bool shouldClose = false;
         
@@ -29,9 +50,16 @@ class UkalusEngine {
             if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
                 glfwSetWindowShouldClose(window, true);
         }
+        void openFile(std::string filepath){
+            
+            activeFile.open(filepath, std::ios::in | std::ios::out | std::ios::app);
+            text = "";
+            for(std::string line; getline(activeFile, line) ; ) {
+                text.append(line.append("\n"));
+            }
+            activeFile.close();
+        }
 
-       
-        // 
         void init(){
             glfwInit();
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -53,6 +81,7 @@ class UkalusEngine {
                     std::cout << "Failed to initialize GLAD" << std::endl;
                     shouldClose = true;
                 }
+            glfwSetCursorPosCallback(window, cursor_position_callback);
             IMGUI_CHECKVERSION();
             ImGui::CreateContext();
             ImGuiIO& io = ImGui::GetIO();
@@ -60,49 +89,80 @@ class UkalusEngine {
             io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
             io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // IF using Docking Branch
 
-            gui_window = glfwCreateWindow(screenWidth, screenHeigth, "ImGui Example", NULL, NULL);
-            glfwMakeContextCurrent(gui_window);
             // Setup Platform/Renderer backends
-            ImGui_ImplGlfw_InitForOpenGL(gui_window, false);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+            ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
             ImGui_ImplOpenGL3_Init();
             
-        };
+        }
         void update(){
             processInput(window);
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT);
+        }
+
+        void updateGUI(){
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            ImGui::ShowDemoWindow(); // Show demo window! :)
-        };
-        void render(){
-            
-            glfwSwapBuffers(window);
-            glfwPollEvents(); 
+            ImGui::InputText("filepath", &filePath);
+            if (ImGui::Button("Open"))
+                openFile(filePath);
+            if (ImGui::Button("New"))
+                openFile(filePath);
+            if (ImGui::Button("Save"))
+                openFile(filePath);
+            ImGui::InputDouble("Mouse x", &mouse_x);
+            ImGui::InputDouble("Mouse y", &mouse_y);
+            ImGui::Text(text.c_str());
+            if (ImGui::BeginMainMenuBar())
+            {
+                if (ImGui::BeginMenu("File"))
+                {   
+                    if (ImGui::MenuItem("Save", "CTRL+S")) {}
+                    if (ImGui::MenuItem("Load", "CTRL+L", false, false)) {}  // Disabled item
+                    ImGui::EndMenu();
+                }
+                if (ImGui::BeginMenu("Edit"))
+                {
+                    if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+                    if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+                    ImGui::Separator();
+                    if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+                    if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+                    if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMainMenuBar();
+                ImGui::ShowDemoWindow();
+                canvas.drawImage(window,800,800);
+            }
+        }
+
+        void render()
+        {
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+            glfwSwapBuffers(window);
+            glfwPollEvents(); 
+        }  
 
-            
-        };    
-        void shutdown(){
+        void shutdown()
+        {
             ImGui_ImplOpenGL3_Shutdown();
             ImGui_ImplGlfw_Shutdown();
             ImGui::DestroyContext();
             glfwTerminate();
             system("clear");
-        };
-
-       
+        }
 };
 
 
 int main(){
     UkalusEngine renderer;
-    renderObject object = renderObject();
     renderer.init();
     while(!glfwWindowShouldClose(renderer.window)){
         renderer.update();
+        renderer.updateGUI();
         renderer.render();
        
       
@@ -111,4 +171,3 @@ int main(){
 
     return 0;
 }
-
