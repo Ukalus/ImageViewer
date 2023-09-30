@@ -20,24 +20,14 @@ class Canvas{
     unsigned int textureId;
     unsigned int shaderId; 
 
-    
-
     std::string vertexShaderSourcePath;
     std::string fragmentShaderSourcePath;
-
-    const char* vertexShaderSource;
-    const char* fragmentShaderSource;
-    
-
-    unsigned int vertexShader;
-    unsigned int fragmentShader;
-
     enum ShaderType {
         vertex,
         fragment
     };
 
-    void loadShader(std::string filePath, ShaderType type){
+    unsigned int loadShader(std::string filePath, ShaderType type){
         std::ifstream shaderFile;
         shaderFile.open(filePath);
         std::stringstream shaderStream;
@@ -45,14 +35,27 @@ class Canvas{
         shaderFile.close();
         if(type == ShaderType::vertex){
             std::string vertexShaderString = shaderStream.str();
-            vertexShaderSource = vertexShaderString.c_str();
+            const char* vertexShaderSource = vertexShaderString.c_str();
+            unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
+            glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+            glCompileShader(vertexShader);
+            return vertexShader;
 
         }
         else if(type == ShaderType::fragment){
             std::string fragmentShaderString = shaderStream.str();
-            fragmentShaderSource = fragmentShaderString.c_str();
+            const char* fragmentShaderSource = fragmentShaderString.c_str();
+            unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+            glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+            glCompileShader(fragmentShader);
+            return fragmentShader;
             
         }
+
+        
+        
+        
+        
     }
     void drawImage(GLFWwindow* window,float width,float height){
         float vertices[] = {
@@ -65,8 +68,7 @@ class Canvas{
         0, 1, 3,   // first triangle
         1, 2, 3    // second triangle
         };
-        loadShader("./shader/canvas.vert", ShaderType::vertex);
-        loadShader("./shader/canvas.frag", ShaderType::fragment); 
+        
 
 
         unsigned int VBO;
@@ -96,15 +98,10 @@ class Canvas{
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-        vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-        glCompileShader(vertexShader);
         
+        vertexShader = loadShader("./shader/canvas.vert", ShaderType::vertex);
+        fragmentShader = loadShader("./shader/canvas.frag", ShaderType::fragment); 
         
-        fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-        glCompileShader(fragmentShader);
-
 
         unsigned int shaderProgram;
         shaderProgram = glCreateProgram();
