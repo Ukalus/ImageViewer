@@ -34,10 +34,9 @@ static void cursor_position_callback(GLFWwindow* window, double xpos, double ypo
 
 class UkalusEngine {
     public:
-        unsigned int screenWidth = 800;
-        unsigned int screenHeigth = 600;
+        int screenWidth = 800;
+        int screenHeigth = 600;
         GLFWwindow* window;
-        GLFWwindow* gui_window;
         Canvas canvas;
         MainMenu mainMenu;
         Debug debug;
@@ -92,6 +91,8 @@ class UkalusEngine {
             canvas.loadShader("./shader/canvas.vert", canvas.ShaderType::vertex);
             canvas.loadShader("./shader/canvas.frag", canvas.ShaderType::fragment);
             
+            debug.getDimensions(&screenHeigth,&screenWidth);
+            
         }
         void update(){
             processInput(window);
@@ -105,12 +106,14 @@ class UkalusEngine {
             ImGui::NewFrame();
            
             mainMenu.draw();
+            
             canvas.draw(window,800,800);
             debug.draw();
         }
 
         void render()
-        {
+        {   
+            glfwGetWindowSize(window,&screenHeigth,&screenWidth);
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
             glfwSwapBuffers(window);
