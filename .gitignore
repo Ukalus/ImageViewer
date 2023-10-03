@@ -1,11 +1,9 @@
 CMakeFiles
-glfw/*
-imgui
-OpenGl/*
 usr
 ImageViewer
 cmake_install.cmake
-CMakeCache
+CMakeCache.txt
+imgui.ini
 Makefile
 third_party/*
 

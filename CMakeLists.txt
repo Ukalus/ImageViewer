@@ -28,7 +28,6 @@ set(SOURCES
 
 
 
-set(GLFW_LIB_PATH ${THIRD_PARTY}/)
 
 add_executable(ImageViewer
     ${SOURCES}
@@ -48,7 +47,7 @@ add_subdirectory(${THIRD_PARTY}/glad)
 
 # All library file include paths  
 target_link_directories(ImageViewer PUBLIC 
-    ./third_party/lib/
+    ${THIRD_PARTY}/lib/
     
 )
 
