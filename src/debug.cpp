@@ -11,7 +11,7 @@ class Debug {
     int* windowHeight;
     int* windowWidth;
     long duration;
-    int* FPS;
+    int FPNS;
     
     
     void getDimensions(int* windowHeight,int* windowWidth){
@@ -20,19 +20,22 @@ class Debug {
     }
 
     void getFPS(){
-        auto now = std::chrono::high_resolution_clock::now();
-        auto ns_now = std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
-        this -> duration = ns_now.time_since_epoch().count();
+        auto now = std::chrono::system_clock::now();
+        auto ms_now = std::chrono::time_point_cast<std::chrono::nanoseconds>(now);
+        auto difference = ms_now.time_since_epoch().count() - this -> duration;
+        this -> FPNS = difference / 1000;
+        this -> duration =  ms_now.time_since_epoch().count();
     }
     void draw(){
         getFPS();
-        int now = this-> duration;
         ImGui::Begin("Debugging Info");
             ImGui::Text("Framerate");
             ImGui::Text("Window Size:");
             ImGui::InputInt("Height ", windowHeight);
             ImGui::InputInt("Width", windowWidth);
-            ImGui::InputInt("Duration", &now);
+            ImGui::Text("Framerate:");
+            ImGui::InputInt("##", &FPNS);
+            ImGui::Text("Performance");
         ImGui::End();
     }
 };
