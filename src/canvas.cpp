@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stb_image.h>
 
 
 class Canvas{
@@ -62,6 +63,20 @@ class Canvas{
         
         
     }
+
+    void loadPNG(){
+        float texCoords[] = {
+            0.0f,0.0f,
+            0.0f,1.0f,
+            1.0f,0.0f
+    };
+    int width, height, nrChannels;
+
+    unsigned char *data = stbi_load("./static/cat eyebrow.jpg")
+
+
+    }
+
     void draw(GLFWwindow* window,float width,float height){
         float vertices[] = {
             0.0f,  -1.0f, 0.0f,
